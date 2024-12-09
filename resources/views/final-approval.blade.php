@@ -13,8 +13,12 @@
                     <form method="post" action="{{ route('final_approval.approve') }}" class="space-y-6 p-6">
                         @csrf
 
-                        <x-primary-button
+                        <x-primary-button name="action" value="accept"
                             >{{ __('Approve Selected Indicators') }}
+                        </x-primary-button>
+
+                        <x-primary-button name="action" value="reject"
+                            >{{ __('Reject Selected Indicators') }}
                         </x-primary-button>
 
                         <table class="min-w-full border-collapse border border-gray-300">
@@ -66,7 +70,7 @@
 
                                             @if ($counter == 1)
                                                     <td rowspan={{ $mfoCount }} class="border border-gray-300 px-4 py-2">
-                                                        {{ $indicator->type == 1 ? "Primary" : "Secondary" }}
+                                                        {{ $indicator->type == 0 ? '-' : ($indicator->type == 1 ? "Primary" : "Secondary") }}
                                                     </td>
                                                     <td rowspan={{ $mfoCount }} class="border border-gray-300 px-4 py-2">
                                                         {{ $indicator->verdict ? "Approved" : "Rejected" }}

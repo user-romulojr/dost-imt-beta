@@ -16,6 +16,15 @@
         {{ __('Primary Indicators') }}
     </x-nav-link>
 
+    <x-nav-link :href="route('secondary_indicators.index')" :active="request()->routeIs('secondary_indicators.index')">
+        {{ __('Secondary Indicators') }}
+    </x-nav-link>
+
+    <x-nav-link :href="route('archived_indicators.index')" :active="request()->routeIs('archived_indicators.index')">
+        {{ __('Archived Indicators') }}
+    </x-nav-link>
+
+
     <x-nav-link :href="route('evaluate_indicators.index')" :active="request()->routeIs('evaluate_indicators.index')">
         {{ __('Evaluate Indicators') }}
     </x-nav-link>
@@ -25,7 +34,11 @@
     </x-nav-link>
 
     <x-nav-link :href="route('draft_indicators.index')" :active="request()->routeIs('draft_indicators.index')">
-        {{ __('Draft Indicators') }}
+        {{ __('Manage Draft Indicators') }}
+    </x-nav-link>
+
+    <x-nav-link :href="route('mfos.index')" :active="request()->routeIs('mfos.index')">
+        {{ __('Manage MFOs') }}
     </x-nav-link>
 
     <x-nav-link :href="route('submit_draft_indicators.index')" :active="request()->routeIs('submit_draft_indicators.index')">

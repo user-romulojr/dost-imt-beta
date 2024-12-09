@@ -37,6 +37,18 @@ class InitialApprovalIndicatorController extends Controller
 
     public function approve(Request $request)
     {
+
+        if($request->input('action') == 'accept'){
+            $this->accept($request);
+        } else {
+            $this->reject($request);
+        }
+
+        return redirect(route('initial_approval.index'));
+    }
+
+    public function accept(Request $request)
+    {
         foreach($request->items as $item)
         {
             $indicator = Indicator::findOrFail($item);
@@ -44,8 +56,6 @@ class InitialApprovalIndicatorController extends Controller
             $indicator->verdict = true;
             $indicator->save();
         }
-
-        return redirect(route('pending_submission.index'));
     }
 
     public function reject(Request $request)
@@ -57,7 +67,5 @@ class InitialApprovalIndicatorController extends Controller
             $indicator->verdict = false;
             $indicator->save();
         }
-
-        return redirect(route('pending_submission.index'));
     }
 }

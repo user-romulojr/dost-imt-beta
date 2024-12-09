@@ -13,6 +13,12 @@ class PendingSubmissionIndicatorController extends Controller
     public function index()
     {
         $indicators = [ ];
+        $years = array();
+        if(is_null(Auth::user()->agency_id))
+        {
+            return view('pending-submission',['indicators' => $indicators, 'years' => $years]);
+        }
+
         foreach(Agency::findOrFail(Auth::user()->agency_id)->indicators as $indicator)
         {
             if($indicator->status == 0 && $indicator->request_approve)
@@ -22,7 +28,6 @@ class PendingSubmissionIndicatorController extends Controller
         }
 
         // THE CURRENT ADMINISTRATION TERM
-        $years = array();
         $endYear = date('Y');
         while($endYear % 6 != 0){
             $endYear++;
@@ -38,6 +43,17 @@ class PendingSubmissionIndicatorController extends Controller
     }
 
     public function approve(Request $request)
+    {
+        if($request->input('action') == 'accept'){
+            $this->accept($request);
+        } else {
+            $this->reject($request);
+        }
+
+        return redirect(route('pending_submission.index'));
+    }
+
+    public function accept(Request $request)
     {
         foreach($request->items as $item)
         {
@@ -56,8 +72,6 @@ class PendingSubmissionIndicatorController extends Controller
                 $indicator->save();
             }
         }
-
-        return redirect(route('pending_submission.index'));
     }
 
     public function reject(Request $request)
@@ -72,7 +86,5 @@ class PendingSubmissionIndicatorController extends Controller
                 $indicator->agencies()->updateExistingPivot($agency->id, [ 'request_approve' => false ]);
             }
         }
-
-        return redirect(route('pending_submission.index'));
     }
 }

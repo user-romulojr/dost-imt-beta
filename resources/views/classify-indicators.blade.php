@@ -10,11 +10,15 @@
         <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
             <div class="bg-white shadow-sm sm:rounded-lg">
                 <div class="overflow-x-auto text-gray-900">
-                    <form method="post" action="{{ route('classify_indicators.primary') }}" class="space-y-6 p-6">
+                    <form method="post" action="{{ route('classify_indicators.classify') }}" class="space-y-6 p-6">
                         @csrf
 
-                        <x-primary-button
+                        <x-primary-button name="action" value="primary"
                             >{{ __('Classify Selected As Primary Indicators') }}
+                        </x-primary-button>
+
+                        <x-primary-button name="action" value="secondary"
+                            >{{ __('Classify Selected As Secondary Indicators') }}
                         </x-primary-button>
 
                         <table class="min-w-full border-collapse border border-gray-300">

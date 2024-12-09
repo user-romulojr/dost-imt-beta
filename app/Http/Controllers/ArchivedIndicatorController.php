@@ -6,7 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Indicator;
 
-class IndicatorController extends Controller
+class ArchivedIndicatorController extends Controller
 {
     public function index()
     {
@@ -14,7 +14,7 @@ class IndicatorController extends Controller
         $endYear = date('Y');
         foreach(Indicator::all() as $indicator)
         {
-            if($indicator->status == 2 && $indicator->type == 1 && $indicator->end_year >= $endYear)
+            if($indicator->status == 2 && $indicator->end_year < $endYear)
             {
                 array_push($indicators, $indicator);
             }
@@ -32,6 +32,19 @@ class IndicatorController extends Controller
         }
         // end
 
-        return view('indicators',['indicators' => $indicators, 'years' => $years]);
+        return view('archived-indicators',['indicators' => $indicators, 'years' => $years]);
+    }
+
+    public function update($indicatorID, Request $request)
+    {
+        $request->validate([
+            'end_year' => ['required', 'string', 'max:255'],
+        ]);
+
+        $indicator = Indicator::findOrFail($indicatorID);
+        $indicator->end_year = $request->end_year;
+        $indicator->save();
+
+        return redirect(route('archived_indicators.index'));
     }
 }

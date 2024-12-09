@@ -36,9 +36,9 @@ class SubmitDraftIndicatorController extends Controller
         return view('submit-draft-indicators',['indicators' => $indicators, 'years' => $years]);
     }
 
+
     public function store(Request $request)
     {
-
         foreach($request->items as $item)
         {
             $indicator = Indicator::findOrFail($item);
@@ -56,4 +56,5 @@ class SubmitDraftIndicatorController extends Controller
 
         return redirect(route('submit_draft_indicators.index'));
     }
+
 }

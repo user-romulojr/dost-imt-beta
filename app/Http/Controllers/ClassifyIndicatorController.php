@@ -35,6 +35,17 @@ class ClassifyIndicatorController extends Controller
         return view('classify-indicators',['indicators' => $indicators, 'years' => $years]);
     }
 
+    public function classify(Request $request)
+    {
+        if($request->input('action') == 'primary'){
+            $this->primary($request);
+        } else {
+            $this->secondary($request);
+        }
+
+        return redirect(route('classify_indicators.index'));
+    }
+
     public function primary(Request $request)
     {
         foreach($request->items as $item)
@@ -43,8 +54,6 @@ class ClassifyIndicatorController extends Controller
             $indicator->type = 1;
             $indicator->save();
         }
-
-        return redirect(route('classify_indicators.index'));
     }
 
 
@@ -56,7 +65,5 @@ class ClassifyIndicatorController extends Controller
             $indicator->type = 2;
             $indicator->save();
         }
-
-        return redirect(route('classify_indicators.index'));
     }
 }

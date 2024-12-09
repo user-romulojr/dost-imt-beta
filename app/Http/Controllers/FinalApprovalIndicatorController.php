@@ -13,7 +13,7 @@ class FinalApprovalIndicatorController extends Controller
         $indicators = [ ];
         foreach(Indicator::all() as $indicator)
         {
-            if($indicator->status == 1 && $indicator->request_approve && $indicator->type > 0)
+            if($indicator->status == 1 && $indicator->request_approve)
             {
                 array_push($indicators, $indicator);
             }
@@ -37,14 +37,24 @@ class FinalApprovalIndicatorController extends Controller
 
     public function approve(Request $request)
     {
+
+        if($request->input('action') == 'accept'){
+            $this->accept($request);
+        } else {
+            $this->reject($request);
+        }
+
+        return redirect(route('final_approval.index'));
+    }
+
+    public function accept(Request $request)
+    {
         foreach($request->items as $item)
         {
             $indicator = Indicator::findOrFail($item);
             $indicator->status = 2;
             $indicator->save();
         }
-
-        return redirect(route('final_approval.index'));
     }
 
     public function reject(Request $request)
@@ -58,7 +68,5 @@ class FinalApprovalIndicatorController extends Controller
             $indicator->verdict = true;
             $indicator->save();
         }
-
-        return redirect(route('final_approval.index'));
     }
 }
